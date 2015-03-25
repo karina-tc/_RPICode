@@ -1,0 +1,29 @@
+#!/bin/sh -e
+#
+# rc.local
+#
+# This script is executed at the end of each multiuser runlevel.
+# Make sure that the script will "exit 0" on success or any other
+# value on error.
+#
+# In order to enable or disable this script just change the execution
+# bits.
+#
+# By default this script does nothing.
+
+# Print the IP address
+_IP=$(hostname -I) || true
+if [ "$_IP" ]; then
+  printf "My IP address is %s\n" "$_IP"
+# Added this code to send start up mailer script
+  python /home/pi/Code/startup_mailer.py
+
+fi
+
+# Added this code to send start up video script
+( sleep 5; sudo bash /home/pi/Code/videoplayer.sh ) &
+
+# Added this code to blink the LED at start up
+ python /home/pi/Code/blinkLED.py
+
+exit 0
